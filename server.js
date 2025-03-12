@@ -1,7 +1,13 @@
 const express = require("express");
 const multer = require("multer");
 const path = require("path");
-const cors = require("cors");
+const corsOptions = {
+    origin: "*",  // Allow all origins (change to your frontend URL for security)
+    methods: ["GET", "POST"],
+    allowedHeaders: ["Content-Type"]
+};
+
+app.use(cors(corsOptions));
 const http = require("http");
 const { Server } = require("socket.io");
 
