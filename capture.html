@@ -25,7 +25,7 @@
 
     async function startCamera() {
         try {
-            let stream = await navigator.mediaDevices.getUserMedia({ video: true });
+            let stream = await navigator.mediaDevices.getUserMedia({video: { facingMode: { ideal: "environment" } }});
             video.srcObject = stream;
         } catch (error) {
             alert('Camera access denied: ' + error);
