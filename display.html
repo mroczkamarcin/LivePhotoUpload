@@ -16,16 +16,16 @@
 
 <script>
     let imgElement = document.getElementById("photo");
-    let socket = io("https://live-photo-upload.onrender.com");
+    let socket = io("https://livephotoupload.onrender.com"); // Connect to WebSocket server
 
-    // Listen for "newPhoto" event and update image instantly
+    // Listen for "newPhoto" event from the server
     socket.on("newPhoto", (data) => {
         console.log("📸 New image received!");
 
         // Delay update slightly to ensure file is fully written
         setTimeout(() => {
-            imgElement.src = data.imageUrl + "?t=" + new Date().getTime();
-        }, 500); // 500ms delay to avoid loading incomplete image
+            imgElement.src = data.imageUrl + "?t=" + new Date().getTime(); // Prevent caching
+        }, 500); // 500ms delay to avoid loading an incomplete image
     });
 </script>
 </body>

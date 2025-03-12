@@ -1,13 +1,7 @@
 const express = require("express");
 const multer = require("multer");
 const path = require("path");
-const corsOptions = {
-    origin: "*",  // Allow all origins (change to your frontend URL for security)
-    methods: ["GET", "POST"],
-    allowedHeaders: ["Content-Type"]
-};
-
-app.use(cors(corsOptions));
+const cors = require("cors");
 const http = require("http");
 const { Server } = require("socket.io");
 
@@ -18,7 +12,7 @@ const io = new Server(server, { cors: { origin: "*" } });
 app.use(cors());
 app.use(express.static("uploads"));
 
-// Set up storage for uploaded images
+// Configure Multer to save the latest image
 const storage = multer.diskStorage({
     destination: "uploads/",
     filename: (req, file, cb) => {
@@ -31,7 +25,7 @@ const upload = multer({ storage });
 app.post("/upload", upload.single("photo"), (req, res) => {
     console.log("📸 New photo uploaded!");
 
-    // Notify all connected clients about the new photo
+    // Notify all clients that a new image is available
     io.emit("newPhoto", { imageUrl: "/latest.jpg" });
 
     res.json({ success: true, imageUrl: "/latest.jpg" });
