@@ -16,7 +16,8 @@
 
 <script>
     let imgElement = document.getElementById("photo");
-    let socket = io("http://localhost:3000");
+    let serverUrl = "https://live-photo-upload.onrender.com/upload";
+    let socket = io("https://live-photo-upload.onrender.com");
 
     // Listen for "newPhoto" event and update image instantly
     socket.on("newPhoto", (data) => {
