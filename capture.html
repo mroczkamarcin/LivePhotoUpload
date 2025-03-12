@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live Photo Upload</title>
+    <style>
+        body { text-align: center; font-family: Arial, sans-serif; }
+        video, canvas { width: 90%; max-width: 600px; border-radius: 10px; }
+        button { margin: 10px; padding: 10px 15px; font-size: 16px; }
+    </style>
+</head>
+<body>
+<h2>Take a Photo</h2>
+<video id="cameraFeed" autoplay playsinline></video>
+<canvas id="canvas" style="display: none;"></canvas>
+<br>
+<button onclick="capturePhoto()">📷 Capture Photo</button>
+
+<script>
+    let video = document.getElementById('cameraFeed');
+    let canvas = document.getElementById('canvas');
+    let ctx = canvas.getContext('2d');
+    let serverUrl = "http://localhost:3000/upload"; // Change this when deploying
+
+    async function startCamera() {
+        try {
+            let stream = await navigator.mediaDevices.getUserMedia({ video: true });
+            video.srcObject = stream;
+        } catch (error) {
+            alert('Camera access denied: ' + error);
+        }
+    }
+
+    function capturePhoto() {
+        canvas.width = video.videoWidth;
+        canvas.height = video.videoHeight;
+        ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+        canvas.toBlob(blob => {
+            let formData = new FormData();
+            formData.append("photo", blob, "photo.jpg");
+
+            fetch(serverUrl, { method: "POST", body: formData })
+                .then(response => response.json())
+                .then(data => console.log("Uploaded:", data))
+                .catch(error => console.error("Upload failed:", error));
+        }, "image/jpeg");
+    }
+
+    startCamera();
+</script>
+</body>
+</html>

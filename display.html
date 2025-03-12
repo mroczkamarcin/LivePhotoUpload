@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live Image Display</title>
+    <script src="https://cdn.socket.io/4.0.1/socket.io.min.js"></script>
+    <style>
+        body { text-align: center; font-family: Arial, sans-serif; }
+        img { width: 90%; max-width: 600px; border-radius: 10px; border: 2px solid #ccc; }
+    </style>
+</head>
+<body>
+<h2>Live Photo Display</h2>
+<img id="photo" src="http://localhost:3000/latest.jpg" alt="Waiting for image..." />
+
+<script>
+    let imgElement = document.getElementById("photo");
+    let socket = io("http://localhost:3000");
+
+    // Listen for "newPhoto" event and update image instantly
+    socket.on("newPhoto", (data) => {
+        console.log("📸 New image received!");
+
+        // Delay update slightly to ensure file is fully written
+        setTimeout(() => {
+            imgElement.src = data.imageUrl + "?t=" + new Date().getTime();
+        }, 500); // 500ms delay to avoid loading incomplete image
+    });
+</script>
+</body>
+</html>
