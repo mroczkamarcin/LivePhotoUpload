@@ -24,7 +24,7 @@
 
         // Delay update slightly to ensure file is fully written
         setTimeout(() => {
-            imgElement.src = data.imageUrl + "?t=" + new Date().getTime(); // Prevent caching
+            imgElement.src = "https://livephotoupload.onrender.com/latest.jpg?t=" + new Date().getTime(); // Prevent caching
         }, 500); // 500ms delay to avoid loading an incomplete image
     });
 </script>
