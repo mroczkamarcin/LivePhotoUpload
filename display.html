@@ -12,11 +12,11 @@
 </head>
 <body>
 <h2>Live Photo Display</h2>
-<img id="photo" src="http://localhost:3000/latest.jpg" alt="Waiting for image..." />
+<img id="photo" src="https://livephotoupload.onrender.com/latest.jpg" alt="Waiting for image..." />
 
 <script>
     let imgElement = document.getElementById("photo");
-    let socket = io("https://livephotoupload.onrender.com");
+    let socket = io("https://live-photo-upload.onrender.com");
 
     // Listen for "newPhoto" event and update image instantly
     socket.on("newPhoto", (data) => {
